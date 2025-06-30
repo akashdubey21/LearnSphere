@@ -1,33 +1,35 @@
-// routes/auth.js
-import express from "express";
-import bcrypt from "bcryptjs";
-import pool from '../db.js'; 
+import express from 'express';
+import pool from '../db.js';
 
 const router = express.Router();
 
-router.post("/register", async (req, res) => {
-  const { email, password } = req.body;
-
+router.post('/register', async (req, res) => {
   try {
-    // check if user already exists
-    const existing = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
-    if (existing.rows.length > 0) {
-      return res.status(400).json({ message: "Email already exists" });
+    console.log('📥 Body received:', req.body);
+
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password required' });
     }
 
-    // hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const result = await pool.query(
+      'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email',
+      [email, password]
+    );
 
-    // insert new user
-    await pool.query("INSERT INTO users (email, password) VALUES ($1, $2)", [
-      email,
-      hashedPassword,
-    ]);
+    console.log('✅ Insert result:', result.rows[0]);
 
-    res.status(201).json({ message: "User created successfully" });
-  } catch (err) {
-    console.error("Error during registration:", err.message);
-    res.status(500).json({ message: "Server error", error: err.message });
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error('🔥 Backend error during register:', error);
+
+    if (error.code === '23505') {
+      // PostgreSQL unique violation
+      res.status(409).json({ message: 'Email already registered' });
+    } else {
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
   }
 });
 
