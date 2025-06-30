@@ -22,11 +22,40 @@ const SignUpPage: React.FC = () => {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission
-    console.log("Sign up form submitted:", formData)
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (formData.password !== formData.confirmPassword) {
+    alert("Passwords do not match");
+    return;
   }
+
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: formData.email,
+        password: formData.password,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      alert(result.message || "Registration failed");
+      return;
+    }
+
+    alert("User registered successfully!");
+    // Optionally redirect to login page
+  } catch (err) {
+    console.error("Signup error:", err);
+    alert("An error occurred while signing up");
+  }
+};
 
   return (
     <div className="auth-page">
