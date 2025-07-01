@@ -1,0 +1,100 @@
+.header {
+  background-color: white;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background-color: #2563eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon span {
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.logo-text {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.navigation {
+  display: flex;
+  gap: 32px;
+}
+
+.nav-link {
+  color: #6b7280;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: #111827;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.login-link {
+  color: #6b7280;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-link:hover {
+  color: #111827;
+}
+
+.get-started-btn {
+  background-color: #f97316;
+  color: white;
+  padding: 8px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.get-started-btn:hover {
+  background-color: #ea580c;
+}
+
+@media (max-width: 768px) {
+  .navigation {
+    display: none;
+  }
+
+  .header-content {
+    padding: 0 16px;
+  }
+}
