@@ -10,8 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+<<<<<<< HEAD
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
+=======
+    "@types/react-router-dom": "^5.3.3",
+    "cors": "^2.8.5",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.3"
+>>>>>>> master
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
