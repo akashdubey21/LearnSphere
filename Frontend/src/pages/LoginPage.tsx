@@ -1,32 +1,57 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import Header from "../components/Header"
-import Footer from "../components/Footer"
-import "./AuthPages.css"
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import "./AuthPages.css";
 
 const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     rememberMe: false,
-  })
+  });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:5173/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        alert(result.message || "Login failed");
+        return;
+      }
+
+      alert("Login successful!");
+      // TODO: Navigate to dashboard or store user in state/context
+    } catch (err) {
+      console.error("Login error:", err);
+      alert("An error occurred during login");
+    }
+  };
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    const { name, value, type, checked } = event.target;
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
-    }))
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission
-    console.log("Login form submitted:", formData)
-  }
+    }));
+  };
 
   return (
     <div className="auth-page">
@@ -134,7 +159,7 @@ const LoginPage: React.FC = () => {
 
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;
